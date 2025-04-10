@@ -13,7 +13,7 @@ import CookiesPolicy from "./components/Footer/CookiesPolicy/CookiesPolicy";
 import { CartProvider } from "./context/CartProvider";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import CheckoutPage from "./pages/checkoutPage";
-import { useUser, SignIn, SignUp, RedirectToSignIn } from "@clerk/clerk-react";
+import { SignIn, SignUp} from "@clerk/clerk-react";
 
 
 const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -21,12 +21,6 @@ const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!clerkKey) {
   throw new Error("Missing Clerk Publishable Key. Check your .env file.");
-}
-
-const ProtectedRoute = ({ children }) => {
-  const { isSignedIn } = useUser();
-
-  return isSignedIn ? children : <RedirectToSignIn />
 }
 
 function App() {
@@ -43,9 +37,9 @@ function App() {
           <Route 
             path="/checkout"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <CheckoutPage />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
