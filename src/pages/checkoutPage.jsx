@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ChevronLeft, CreditCard, MapPin, Clock } from "lucide-react"
@@ -13,7 +15,7 @@ const CheckoutPage = () => {
   // Check if clearCart exists, otherwise create a fallback
   const clearCart =
     cart.clearCart ||
-    (() => {
+    ((restaurantId) => {
       console.log("clearCart function not found, using fallback")
       // If clearCart doesn't exist, we'll just log it and continue
     })
@@ -21,8 +23,8 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod") // Default to cash on delivery
   const [isProcessing, setIsProcessing] = useState(false)
   const [paymentError, setPaymentError] = useState("")
-  const { user } = useUser()
-  const { loading, error, userAddress } = useNearbyRestaurants()
+  const { isSignedIn, user } = useUser()
+  const { location, loading, error, userAddress } = useNearbyRestaurants()
 
   // Card details state
   const [cardDetails, setCardDetails] = useState({
@@ -32,7 +34,7 @@ const CheckoutPage = () => {
   })
 
   // Get cart details
-  const { totalPrice } = currentRestaurantId
+  const { totalItems, totalPrice } = currentRestaurantId
     ? calculateCart(currentRestaurantId)
     : { totalItems: 0, totalPrice: 0 }
 
@@ -49,7 +51,7 @@ const CheckoutPage = () => {
     const { items: itemQuantities, menuCategories } = restaurantCarts[currentRestaurantId]
 
     if (menuCategories) {
-      Object.entries(menuCategories).forEach(([categoryItems]) => {
+      Object.entries(menuCategories).forEach(([_, categoryItems]) => {
         categoryItems.forEach((item) => {
           const quantity = itemQuantities[item.id] || 0
           if (quantity > 0) {

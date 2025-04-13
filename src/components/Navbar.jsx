@@ -1,14 +1,14 @@
 import { ShoppingCart } from 'lucide-react'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
-import { useCart } from '../context/CartProvider'
-import { Link, useNavigate } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
+import { useNavigate } from 'react-router-dom'
 
 function Navbar() {
   const cartContext = useCart()
 
   console.log('Cart Context:', cartContext) // Debug log
 
-  const { 
+  const {
     calculateTotalCart, 
     toggleCart, 
     cartVisible,
